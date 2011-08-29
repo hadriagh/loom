@@ -12,7 +12,7 @@ require 'iconv'
 DB = Sequel.connect(:adapter=>'mysql', :host=>'harpoon', :database=>'harpoon', :user=>'harpoon', :password=>'2ownHarpoon', :encoding => 'utf8')
 DB2 = Sequel.connect(:adapter=>'mysql', :host=>'localhost', :database=>'offers_site', :user=>'offers_site', :password=>'2ownOffersSite', :encoding => 'utf8')
 
-sql = "SELECT press_id, content FROM press_releases WHERE press_id = 23"
+sql = "SELECT press_id, content FROM press_releases"
 
 ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
 
