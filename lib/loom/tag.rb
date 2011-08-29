@@ -6,23 +6,25 @@ class Loom
    
     
     def weave
-      return @node.text if @node.text?
+      return @node.text.lstrip if @node.text?
       
       html = ''
       prefix = ''
-      suffix = "\n"
+      suffix = "\n\n"
       
-      @node.children.each do |child|
+      @node.children.each do |child|        
         tag = Tag.new(child)
         html += tag.weave
       end
+      
+      attributes = get_attributes
       
       case @node.name
       when "h1".."h6"
         prefix = @node.name + '. '
       when "b", "strong"
         prefix = '*'
-        suffix = '*'
+        suffix = '* '
       when "em"
         prefix = '_'
         suffix = '_' 
@@ -30,37 +32,44 @@ class Loom
         prefix = '"'
         suffix = '":' + @node.attr('href')
       when "p"
-        prefix = "p. "
+        prefix = 'p' + attributes + '. '
       when "ol", "ul"
-        suffix = ''
+        suffix = "\n"
       when "li"
         if(@node.parent.name == 'ol')
           prefix = '# '
         else
           prefix = '* '
         end
+        
+        suffix = "\n"
       when "img"
         prefix = '!' + @node.attr('src')
-        suffix = '!'
+        suffix = "!\n\n"
+      when "br"
+        suffix = "\n"
       else
-        @node.inner_html=(html)
-        return @node.to_s
+        @node.inner_html=("\n" + html)
+        return @node.to_s + suffix
       end
-      
-      class_text = get_attribute_string
             
-      return prefix + class_text + html + suffix
+      return prefix + html + suffix
     end
     
     
-    def get_attribute_string
-      if(@node.attr('class'))
-        class_text = '(' + @node.attr('class') + ')'
-      else
-        class_text = ''
-      end
+    def get_attributes
+      id = @node.attr('id')
+      classes = @node.attr('class')
       
-      return class_text
+      if(classes || id)
+        if(id)
+          attributes = '(' + classes.to_s + '#' + id.to_s + ')'
+        else
+          attributes = '(' + classes.to_s + ')'
+        end
+      else
+        attributes = ''
+      end
     end
   end
- end
+end

@@ -6,19 +6,25 @@ require 'mysql'
 require 'sequel'
 require 'pp'
 require 'loom'
+require 'redcloth'
+require 'iconv'
 
-DB = Sequel.connect(:adapter=>'mysql', :host=>'harpoon', :database=>'harpoon', :user=>'harpoon', :password=>'2ownHarpoon')
-#DB = Sequel.connect(:adapter=>'mysql', :host=>'localhost', :database=>'offers_site', :user=>'offers_site', :password=>'2ownOffersSite')
+DB = Sequel.connect(:adapter=>'mysql', :host=>'harpoon', :database=>'harpoon', :user=>'harpoon', :password=>'2ownHarpoon', :encoding => 'utf8')
+DB2 = Sequel.connect(:adapter=>'mysql', :host=>'localhost', :database=>'offers_site', :user=>'offers_site', :password=>'2ownOffersSite', :encoding => 'utf8')
 
-sql = "SELECT press_id, content FROM press_releases WHERE press_id = 1"
+sql = "SELECT press_id, content FROM press_releases WHERE press_id = 23"
+
+ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
 
 DB.fetch(sql) do |row|
-  html = row[:content]
-
+  html = ic.iconv(row[:content] + ' ')[0..-2]
+  
   textile = Loom.weave(html)
-
-  pp textile
-
-  #update_ds = DB["UPDATE press_releases SET content = ? WHERE press_id = ?", html, row[:press_id]]
-  #update_ds.update
+  
+  File.open('test.html', 'w') {|f| f.write(RedCloth.new(textile).to_html) }
+  
+  File.open('test.textile', 'w') {|f| f.write(textile) }
+  
+  update_ds = DB2["UPDATE press_releases SET content = ? WHERE press_id = ?", textile, row[:press_id]]
+  update_ds.update
 end
