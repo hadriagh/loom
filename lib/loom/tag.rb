@@ -22,18 +22,39 @@ class Loom
       case @node.name
       when "h1".."h6"
         prefix = @node.name + '. '
-      when "b", "strong"
+      when "strong"
         prefix = '*'
         suffix = '* '
+      when "b"
+        prefix = '**'
+        suffix = '** '
       when "em"
         prefix = '_'
         suffix = '_ ' 
+      when "i"
+        prefix = "__"
+        suffix = "__ "
+      when "cite"
+        prefix = "??"
+        suffix = "?? "
+      when "del"
+        prefix = "-"
+        suffix = "- "
+      when "ins"
+        prefix = "+"
+        suffix = "+ "
       when "sup"
         prefix = '^'
         suffix = '^ '
       when "sub"
         prefix = "~"
         suffix = "~ "
+      when "span"
+        prefix = "%"
+        suffix = "% "
+      when "code"
+        prefix = "@"
+        suffix = "@ "
       when "a"
         prefix = '"'
         suffix = '":' + @node.attr('href')
