@@ -27,7 +27,13 @@ class Loom
         suffix = '* '
       when "em"
         prefix = '_'
-        suffix = '_' 
+        suffix = '_ ' 
+      when "sup"
+        prefix = '^'
+        suffix = '^ '
+      when "sub"
+        prefix = "~"
+        suffix = "~ "
       when "a"
         prefix = '"'
         suffix = '":' + @node.attr('href')
