@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "A ruby gem for converting HTML to Textile"
   s.authors     = ["David Moore"]
   s.email       = 'hadriagh@gmail.com'
-  s.files       = ["lib/loom.rb"]
+  s.files       = ["lib/loom.rb","lib/loom/tag.rb"]
   s.homepage    = 'https://github.com/hadriagh/loom'
 end
