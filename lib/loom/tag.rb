@@ -76,6 +76,9 @@ class Loom::Tag
     when "td"
       prefix = '|'
       suffix = ''
+    when "th"
+      prefix = '|_. '
+      suffix = ''
     when "tr"
       suffix = "|\n"
     when "table"
