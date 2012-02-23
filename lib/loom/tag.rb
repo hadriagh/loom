@@ -74,10 +74,24 @@ class Loom::Tag
     when "br"
       suffix = "\n"
     when "td"
-      prefix = '|'
+      colspan = @node.attr('colspan')
+      
+      if(colspan)
+        prefix = '|\\' + colspan + '. '
+      else
+        prefix = '|'
+      end
+      
       suffix = ''
     when "th"
-      prefix = '|_. '
+      colspan = @node.attr('colspan')
+      
+      if(colspan)
+        prefix = '|_\\' + colspan + '. '
+      else
+        prefix = '|_. '
+      end
+      
       suffix = ''
     when "tr"
       suffix = "|\n"
